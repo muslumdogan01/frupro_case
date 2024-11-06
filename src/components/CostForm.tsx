@@ -1,6 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, ChangeEvent } from "react";
+/* eslint-disable */
 
+import { useState, ChangeEvent } from "react";
+import React from "react";
 interface Cost {
   costType: string;
   description: string;
@@ -12,7 +13,11 @@ interface Cost {
   vatAmount: number;
 }
 
-const CostForm = () => {
+
+
+
+const CostForm: React.FC = ():any => {
+
   const [costs, setCosts] = useState<Cost[]>([]);
   const [costType, setCostType] = useState("Air Freight Cost");
   const [description, setDescription] = useState("");
@@ -46,7 +51,7 @@ const CostForm = () => {
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPrice = e.target.value;
     setPrice(Number(e.target.value));
-    setFormError(false); // Kullanıcı alanı doldurunca hata kaybolsun
+    setFormError(false);
     if (newPrice !== "") {
       calculateCostTotal(parseFloat(newPrice));
     } else {
@@ -66,40 +71,36 @@ const CostForm = () => {
   };
 
   const addCost = () => {
-    // Tüm alanları kontrol et
     if (!costType || !price || !vatRate) {
-      setFormError(true); // Eğer boş alan varsa genel hata göster
-      return; // İşlemi durdur
+      setFormError(true);
+      return;
+
+      const selectedCostType = costType || "Air Freight Cost";
+
+      const newCost = {
+        costType: selectedCostType,
+        description,
+        pricingType,
+        currency: "EUR",
+        price,
+        costTotal,
+        vatRate,
+        vatAmount,
+      };
+      setCosts([...costs, newCost]);
+
+      setFormError(false);
+      setCostType("");
+      setDescription("");
+      setPricingType("Price per box");
+      setPrice(0);
+      setVatRate(0);
+      setVatAmount(0);
+      setCostTotal(0);
+      setCurrency("EUR");
     }
-
-    const selectedCostType = costType || "Air Freight Cost";
-
-    // Tüm alanlar doluysa yeni cost ekle
-    const newCost = {
-      costType: selectedCostType,
-      description,
-      pricingType,
-      currency: "EUR",
-      price,
-      costTotal,
-      vatRate,
-      vatAmount,
-    };
-    setCosts([...costs, newCost]);
-
-    // Hata mesajını kapat ve formu sıfırla
-    setFormError(false);
-    setCostType("");
-    setDescription("");
-    setPricingType("Price per box");
-    setPrice("");
-    setVatRate("");
-    setVatAmount(0);
-    setCostTotal(0);
-    setCurrency("EUR");
-  };
-
   return (
+    <div>
     <div className="p-4 space-y-4  bg-white rounded-lg shadow">
       <h2 className="text-xl font-bold">Add Cost</h2>
       <div className="flex flex-col space-y-4">
@@ -122,8 +123,7 @@ const CostForm = () => {
             className="border-2 border-black pl-2"
             type="text"
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
+            onChange={(e) => setDescription(e.target.value)} />
         </div>
 
         <div className="w-80 flex justify-between">
@@ -152,7 +152,9 @@ const CostForm = () => {
               <option>GBP</option>
               <option>TRY</option>
             </select>
-            <input className="border-2 border-black pl-2 w-20" type="number" />
+            <input
+              className="border-2 border-black pl-2 w-20"
+              type="number" />
           </div>
         </div>
         <div>
@@ -162,8 +164,7 @@ const CostForm = () => {
               className="border-2 border-black pl-2"
               type="number"
               value={price}
-              onChange={handlePriceChange} // Fiyat değiştiğinde otomatik Cost Total hesaplanacak
-            />
+              onChange={handlePriceChange} />
           </div>
         </div>
 
@@ -173,8 +174,7 @@ const CostForm = () => {
             className="border-2 border-black pl-2"
             type="number"
             value={vatRate}
-            onChange={handleVatRateChange} // VAT Rate değiştiğinde otomatik VAT Amount hesaplanacak
-          />
+            onChange={handleVatRateChange} />
         </div>
 
         <div className="w-80 flex justify-between">
@@ -183,8 +183,7 @@ const CostForm = () => {
             className="border-2 border-black pl-2"
             type="number"
             value={vatAmount}
-            readOnly // Bu alan sadece hesaplamaları göstermek için olacak
-          />
+            readOnly />
         </div>
 
         <div className="w-80 flex justify-between">
@@ -193,12 +192,14 @@ const CostForm = () => {
             className="border-2 border-black pl-2"
             type="number"
             value={costTotal}
-            readOnly // Bu alan da sadece hesaplama gösterecek
-          />
+            readOnly />
         </div>
       </div>
 
-      <button onClick={addCost} className="px-4 py-2 bg-blue-500 text-white">
+      <button
+        onClick={addCost}
+        className="px-4 py-2 bg-blue-500 text-white"
+      >
         Add Cost
       </button>
 
@@ -208,7 +209,6 @@ const CostForm = () => {
         </p>
       )}
 
-      {/* Costs Table */}
       <table className="w-full mt-4 border">
         <thead className="w-full bg-red-200">
           <tr>
@@ -236,7 +236,9 @@ const CostForm = () => {
         </thead>
       </table>
     </div>
+  </div>
   );
 };
+}
 
 export default CostForm;

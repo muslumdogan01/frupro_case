@@ -16,8 +16,12 @@ interface Cost {
 
 
 
-const CostForm: React.FC = ():any => {
 
+  
+
+
+
+export default function CostForm() {
   const [costs, setCosts] = useState<Cost[]>([]);
   const [costType, setCostType] = useState("Air Freight Cost");
   const [description, setDescription] = useState("");
@@ -99,9 +103,12 @@ const CostForm: React.FC = ():any => {
       setCostTotal(0);
       setCurrency("EUR");
     }
+
+};
+
   return (
     <div>
-    <div className="p-4 space-y-4  bg-white rounded-lg shadow">
+    <div className="p-4 space-y-4   rounded-lg shadow">
       <h2 className="text-xl font-bold">Add Cost</h2>
       <div className="flex flex-col space-y-4">
         <div className="w-80 flex justify-between">
@@ -238,7 +245,4 @@ const CostForm: React.FC = ():any => {
     </div>
   </div>
   );
-};
 }
-
-export default CostForm;

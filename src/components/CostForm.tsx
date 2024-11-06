@@ -11,7 +11,6 @@ const CostForm = () => {
   const [costTotal, setCostTotal] = useState(0);
   const [costs, setCosts] = useState([]);
   const [boxCount, kgCount] = [800, 3200];
-  const [priceError, setPriceError] = useState(false);
   const [formError, setFormError] = useState(false);
 
   const calculateCostTotal = (newPrice) => {
@@ -153,11 +152,6 @@ const CostForm = () => {
               onChange={handlePriceChange} // Fiyat değiştiğinde otomatik Cost Total hesaplanacak
             />
           </div>
-          {priceError && (
-            <span className="text-red-500 text-sm">
-              Price değeri boş bırakılamaz.
-            </span>
-          )}
         </div>
 
         <div className="w-80 flex justify-between">

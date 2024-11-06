@@ -1,7 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
+
+interface Cost {
+  costType: string;
+  description: string;
+  pricingType: string;
+  currency: string;
+  price: number;
+  costTotal: number;
+  vatRate: number;
+  vatAmount: number;
+}
 
 const CostForm = () => {
+  const [costs, setCosts] = useState<Cost[]>([]);
   const [costType, setCostType] = useState("Air Freight Cost");
   const [description, setDescription] = useState("");
   const [pricingType, setPricingType] = useState("Price per box");
@@ -10,7 +22,7 @@ const CostForm = () => {
   const [vatRate, setVatRate] = useState(0);
   const [vatAmount, setVatAmount] = useState(0);
   const [costTotal, setCostTotal] = useState(0);
-  const [costs, setCosts] = useState([]);
+
   const [boxCount, kgCount] = [800, 3200];
   const [formError, setFormError] = useState(false);
 
@@ -31,9 +43,9 @@ const CostForm = () => {
     setVatAmount(vat);
   };
 
-  const handlePriceChange = (e: { target: { value: any; }; }) => {
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newPrice = e.target.value;
-    setPrice(newPrice);
+    setPrice(Number(e.target.value));
     setFormError(false); // Kullanıcı alanı doldurunca hata kaybolsun
     if (newPrice !== "") {
       calculateCostTotal(parseFloat(newPrice));
@@ -42,14 +54,14 @@ const CostForm = () => {
     }
   };
 
-  const handleVatRateChange = (e) => {
+  const handleVatRateChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newVatRate = e.target.value;
-    setVatRate(newVatRate);
+    setVatRate(Number(e.target.value));
     setFormError(false);
     if (newVatRate !== "") {
       calculateVatAmount(parseFloat(newVatRate), costTotal);
     } else {
-      setVatAmount(0);
+      setVatAmount(Number(0));
     }
   };
 

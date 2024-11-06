@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 
 const CostForm = () => {
@@ -13,7 +14,7 @@ const CostForm = () => {
   const [boxCount, kgCount] = [800, 3200];
   const [formError, setFormError] = useState(false);
 
-  const calculateCostTotal = (newPrice) => {
+  const calculateCostTotal = (newPrice: number) => {
     let total = 0;
     if (pricingType === "Price per box") {
       total = newPrice * boxCount;
@@ -25,12 +26,12 @@ const CostForm = () => {
     setCostTotal(total);
   };
 
-  const calculateVatAmount = (newVatRate, total) => {
+  const calculateVatAmount = (newVatRate: number, total: number) => {
     const vat = (newVatRate / 100) * total;
     setVatAmount(vat);
   };
 
-  const handlePriceChange = (e) => {
+  const handlePriceChange = (e: { target: { value: any; }; }) => {
     const newPrice = e.target.value;
     setPrice(newPrice);
     setFormError(false); // Kullanıcı alanı doldurunca hata kaybolsun
